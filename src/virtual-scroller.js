@@ -73,7 +73,7 @@ export class VirtualScroller {
     let offset = start * this.placeholderSize;
     for (let i = start; i <= end; i++) {
       if (!this.renderedItems[i]) {
-        const item = this.params.placeholderBuilder();
+        const item = this.params.placeholderBuilder(i);
         item.style.position = "absolute";
         item.style.left = item.style.right = "0px";
         this.scroller.appendChild(item);
