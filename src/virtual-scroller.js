@@ -37,20 +37,20 @@ export class VirtualScroller {
     this.placeholderSize = placeholder.offsetHeight;
     this.scroller.removeChild(placeholder);
     this.runway.style.transform = `translateY(${this.placeholderSize *
-    this.params.itemCount}px)`;
+      this.params.itemCount}px)`;
 
     for (let i in this.renderedItems) {
       this.renderedItems[i].height = null;
     }
 
-    this.render();
+    this.performLayout();
   }
 
   onScroll() {
-    this.render();
+    this.performLayout();
   }
 
-  render() {
+  performLayout() {
     const start = Math.floor(this.scroller.scrollTop / this.placeholderSize);
     const visible = Math.floor(
       this.scroller.offsetHeight / this.placeholderSize
