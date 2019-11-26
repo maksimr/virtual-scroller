@@ -10,7 +10,7 @@ describe("VirtualScroller", function() {
     expect(VirtualScroller).toBeDefined();
   });
 
-  it("should use position 'relative' for a passed node because we would render items relatively this node using positio absolute", function() {
+  it("should use position 'relative' for a passed node because we would render items relatively this node using position absolute", function() {
     VirtualScroller.builder(node, {
       itemCount: 10,
       placeholderBuilder() {
