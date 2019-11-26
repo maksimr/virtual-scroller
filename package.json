@@ -1,0 +1,25 @@
+{
+  "name": "virtual-scroller",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel index.html --open",
+    "build": "parcel build index.html",
+    "test": "jest"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "24.9.0",
+    "jest-cli": "24.9.0",
+    "@babel/preset-env": "7.7.4",
+    "@babel/core": "7.2.0",
+    "parcel-bundler": "1.12.4"
+  },
+  "keywords": []
+}
