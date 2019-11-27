@@ -8,7 +8,7 @@ describe("VirtualScroller", function() {
     node.style.height = "100px";
     params = {
       itemCount: 10,
-      placeholderBuilder(index) {
+      itemBuilder(index) {
         const it = document.createElement("div");
         it.style.height = `${parseInt(node.style.height) / 10}px`;
         it.innerText = `${index}`;

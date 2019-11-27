@@ -12,8 +12,8 @@ export class VirtualScroller {
       throw Error("itemCount is required");
     }
 
-    if (!this.params.hasOwnProperty("placeholderBuilder")) {
-      throw Error("placeholderBuilder is required");
+    if (!this.params.hasOwnProperty("itemBuilder")) {
+      throw Error("itemBuilder is required");
     }
 
     this.runway = document.createElement("div");
@@ -31,7 +31,7 @@ export class VirtualScroller {
   }
 
   onResize() {
-    const placeholder = this.params.placeholderBuilder();
+    const placeholder = this.params.itemBuilder();
     placeholder.style.visibility = "hidden";
     this.scroller.appendChild(placeholder);
     this.placeholderSize = placeholder.offsetHeight;
@@ -73,7 +73,7 @@ export class VirtualScroller {
     let offset = start * this.placeholderSize;
     for (let i = start; i <= end; i++) {
       if (!this.renderedItems[i]) {
-        const item = this.params.placeholderBuilder(i);
+        const item = this.params.itemBuilder(i);
         item.style.position = "absolute";
         item.style.left = item.style.right = "0px";
         this.scroller.appendChild(item);
