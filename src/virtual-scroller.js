@@ -8,36 +8,36 @@ export class VirtualScroller {
     this.params = params;
     this.renderedItems = {};
 
-    if (!this.params.hasOwnProperty("itemCount")) {
-      throw Error("itemCount is required");
+    if (!this.params.hasOwnProperty('itemCount')) {
+      throw Error('itemCount is required');
     }
 
-    if (!this.params.hasOwnProperty("itemBuilder")) {
-      throw Error("itemBuilder is required");
+    if (!this.params.hasOwnProperty('itemBuilder')) {
+      throw Error('itemBuilder is required');
     }
 
-    this.runway = document.createElement("div");
-    this.runway.style.width = this.runway.style.height = "1px";
-    this.runway.style.position = "absolute";
-    this.runway.style.transform = "translate(0, 0)";
+    this.runway = document.createElement('div');
+    this.runway.style.width = this.runway.style.height = '1px';
+    this.runway.style.position = 'absolute';
+    this.runway.style.transform = 'translate(0, 0)';
 
-    this.scroller.style.position = "relative";
+    this.scroller.style.position = 'relative';
     this.scroller.appendChild(this.runway);
 
-    this.scroller.addEventListener("scroll", this.onScroll.bind(this));
-    window.addEventListener("resize", this.onResize.bind(this));
+    this.scroller.addEventListener('scroll', this.onScroll.bind(this));
+    window.addEventListener('resize', this.onResize.bind(this));
 
     this.onResize();
   }
 
   onResize() {
     const placeholder = this.params.itemBuilder();
-    placeholder.style.visibility = "hidden";
+    placeholder.style.visibility = 'hidden';
     this.scroller.appendChild(placeholder);
     this.placeholderSize = placeholder.offsetHeight;
     this.scroller.removeChild(placeholder);
     this.runway.style.transform = `translateY(${this.placeholderSize *
-      this.params.itemCount}px)`;
+    this.params.itemCount}px)`;
 
     for (let i in this.renderedItems) {
       this.renderedItems[i].height = null;
@@ -74,8 +74,8 @@ export class VirtualScroller {
     for (let i = start; i <= end; i++) {
       if (!this.renderedItems[i]) {
         const item = this.params.itemBuilder(i);
-        item.style.position = "absolute";
-        item.style.left = item.style.right = "0px";
+        item.style.position = 'absolute';
+        item.style.left = item.style.right = '0px';
         this.scroller.appendChild(item);
         this.renderedItems[i] = {
           node: item,
