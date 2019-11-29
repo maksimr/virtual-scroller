@@ -62,6 +62,21 @@ export class VirtualScroller {
     start = Math.max(start, 0);
     end = Math.min(end, this.params.itemCount);
 
+    const fragment = document.createDocumentFragment();
+    for (let i = start; i <= end; i++) {
+      if (!this.renderedItems[i]) {
+        const item = this.params.itemBuilder(i);
+        item.style.position = 'absolute';
+        item.style.left = item.style.right = '0px';
+        fragment.appendChild(item);
+        this.renderedItems[i] = {
+          node: item,
+          height: null
+        };
+      }
+    }
+    this.scroller.appendChild(fragment);
+
     while (this.start < start) {
       this.unmount(this.start++);
     }
@@ -71,24 +86,14 @@ export class VirtualScroller {
     }
 
     let offset = start * this.placeholderSize;
-    for (let i = start; i <= end; i++) {
-      if (!this.renderedItems[i]) {
-        const item = this.params.itemBuilder(i);
-        item.style.position = 'absolute';
-        item.style.left = item.style.right = '0px';
-        this.scroller.appendChild(item);
-        this.renderedItems[i] = {
-          node: item,
-          height: null
-        };
+    for (let i in this.renderedItems) {
+      const item = this.renderedItems[i];
+      if (item.height === null) {
+        item.height = item.node.offsetHeight;
+        item.node.style.transform = `translateY(${offset}px)`;
       }
 
-      if (this.renderedItems[i].height === null) {
-        this.renderedItems[i].height = this.renderedItems[i].node.offsetHeight;
-        this.renderedItems[i].node.style.transform = `translateY(${offset}px)`;
-      }
-
-      offset += this.renderedItems[i].height;
+      offset += item.height;
     }
 
     this.start = start;
