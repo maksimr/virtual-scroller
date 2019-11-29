@@ -65,14 +65,7 @@ export class VirtualScroller {
     const fragment = document.createDocumentFragment();
     for (let i = start; i <= end; i++) {
       if (!this.renderedItems[i]) {
-        const item = this.params.itemBuilder(i);
-        item.style.position = 'absolute';
-        item.style.left = item.style.right = '0px';
-        fragment.appendChild(item);
-        this.renderedItems[i] = {
-          node: item,
-          height: null
-        };
+        fragment.appendChild(this.buildItem(i));
       }
     }
     this.scroller.appendChild(fragment);
@@ -100,9 +93,31 @@ export class VirtualScroller {
     this.end = end;
   }
 
+  buildItem(id) {
+    const node = this.params.itemBuilder(id);
+    node.style.position = 'absolute';
+    node.style.left = node.style.right = '0px';
+    this.renderedItems[id] = {
+      node: node,
+      height: null
+    };
+
+    if (window.MutationObserver) {
+      const observer = new MutationObserver(this.onResize.bind(this));
+      observer.observe(node, {childList: true});
+      this.renderedItems[id].observer = observer;
+    }
+
+    return node;
+  }
+
   unmount(id) {
     if (this.renderedItems[id]) {
-      this.scroller.removeChild(this.renderedItems[id].node);
+      const item = this.renderedItems[id];
+      if (item.observer) {
+        item.observer.disconnect();
+      }
+      this.scroller.removeChild(item.node);
       delete this.renderedItems[id];
     }
   }
