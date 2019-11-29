@@ -78,14 +78,17 @@ export class VirtualScroller {
       this.unmount(this.end--);
     }
 
-    let offset = start * this.placeholderSize;
     for (let i in this.renderedItems) {
       const item = this.renderedItems[i];
       if (item.height === null) {
         item.height = item.node.offsetHeight;
-        item.node.style.transform = `translateY(${offset}px)`;
       }
+    }
 
+    let offset = start * this.placeholderSize;
+    for (let i in this.renderedItems) {
+      const item = this.renderedItems[i];
+      item.node.style.transform = `translateY(${offset}px)`;
       offset += item.height;
     }
 
