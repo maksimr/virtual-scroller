@@ -3,10 +3,21 @@ export class VirtualScroller {
     return new VirtualScroller(node, params);
   }
 
-  constructor(scroller, params) {
-    this.scroller = scroller;
+  constructor(rootNode, params) {
+    this.rootNode = rootNode;
     this.params = params;
     this.renderedItems = {};
+    this.scroller = this.rootNode;
+    while (
+      this.scroller.parentNode &&
+      this.scroller.parentNode !== document) {
+      const overflow = window.getComputedStyle(this.scroller).overflow;
+      if (overflow === 'visible' || overflow === '') {
+        this.scroller = this.scroller.parentNode;
+        continue;
+      }
+      break;
+    }
 
     if (!this.params.hasOwnProperty('itemCount')) {
       throw Error('itemCount is required');
@@ -21,11 +32,12 @@ export class VirtualScroller {
     this.runway.style.position = 'absolute';
     this.runway.style.transform = 'translate(0, 0)';
 
-    this.scroller.style.position = 'relative';
-    this.scroller.appendChild(this.runway);
+    this.rootNode.style.position = 'relative';
+    this.rootNode.appendChild(this.runway);
 
-    this.scroller.addEventListener('scroll', this.onScroll.bind(this));
-    window.addEventListener('resize', this.onResize.bind(this));
+    (this.scroller === document.documentElement ? window : this.scroller)
+      .addEventListener('scroll', () => this.onScroll());
+    window.addEventListener('resize', () => this.onResize());
 
     this.onResize();
   }
@@ -33,9 +45,9 @@ export class VirtualScroller {
   onResize() {
     const placeholder = this.params.itemBuilder();
     placeholder.style.visibility = 'hidden';
-    this.scroller.appendChild(placeholder);
+    this.rootNode.appendChild(placeholder);
     this.placeholderSize = placeholder.offsetHeight;
-    this.scroller.removeChild(placeholder);
+    this.rootNode.removeChild(placeholder);
     this.runway.style.transform = `translateY(${this.placeholderSize *
     this.params.itemCount}px)`;
 
@@ -51,10 +63,10 @@ export class VirtualScroller {
   }
 
   performLayout() {
-    const start = Math.floor(this.scroller.scrollTop / this.placeholderSize);
-    const visible = Math.floor(
-      this.scroller.offsetHeight / this.placeholderSize
-    );
+    const scrollTop = Math.max((this.scroller.scrollTop - this.rootNode.offsetTop), 0);
+    const start = Math.floor(scrollTop / this.placeholderSize);
+    const height = this.scroller.clientHeight;
+    const visible = Math.floor(height / this.placeholderSize);
     this.fill(start, start + visible);
   }
 
@@ -68,7 +80,7 @@ export class VirtualScroller {
         fragment.appendChild(this.buildItem(i));
       }
     }
-    this.scroller.appendChild(fragment);
+    this.rootNode.appendChild(fragment);
 
     while (this.start < start) {
       this.unmount(this.start++);
@@ -120,7 +132,7 @@ export class VirtualScroller {
       if (item.observer) {
         item.observer.disconnect();
       }
-      this.scroller.removeChild(item.node);
+      this.rootNode.removeChild(item.node);
       delete this.renderedItems[id];
     }
   }
