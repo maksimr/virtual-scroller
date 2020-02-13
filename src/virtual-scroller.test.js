@@ -11,13 +11,7 @@ describe('VirtualScroller', function() {
     document.body.appendChild(node);
     params = {
       itemCount: 10,
-      itemBuilder(index) {
-        const it = document.createElement('div');
-        it.style.height = `${parseInt(containerHeight) / 10}px`;
-        it.innerText = `${index}`;
-        it.classList.add('item');
-        return it;
-      }
+      itemBuilder: itemBuilder
     };
   });
 
@@ -37,6 +31,19 @@ describe('VirtualScroller', function() {
     expect(items.length).toEqual(11);
     expect(items[0].style.transform).toEqual('translateY(0px)');
     expect(items[1].style.transform).toEqual(`translateY(${items[0].style.height})`);
+  });
+
+  it('should correctly render visible items if items less then defined in itemsCount', function() {
+    VirtualScroller.builder(node, {
+      ...params,
+      itemBuilder(index) {
+        return index > 0 ? null : itemBuilder(index);
+      }
+    });
+    const items = node.querySelectorAll('.item');
+
+    expect(items.length).toEqual(1);
+    expect(items[0].style.transform).toEqual('translateY(0px)');
   });
 
   it('should remove an item if it out of viewport after scroll', function() {
@@ -99,6 +106,14 @@ describe('VirtualScroller', function() {
   function scroll(node, scrollTop) {
     (node === window ? document.documentElement : node).scrollTop = scrollTop;
     node.dispatchEvent(new Event('scroll'));
+  }
+
+  function itemBuilder(index) {
+    const it = document.createElement('div');
+    it.style.height = '10px';
+    it.innerText = `${index}`;
+    it.classList.add('item');
+    return it;
   }
 
   try {

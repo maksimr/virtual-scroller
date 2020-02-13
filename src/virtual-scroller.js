@@ -77,7 +77,11 @@ export class VirtualScroller {
     const fragment = document.createDocumentFragment();
     for (let i = start; i <= end; i++) {
       if (!this.renderedItems[i]) {
-        fragment.appendChild(this.buildItem(i));
+        const itemNode = this.buildItem(i);
+        if (!itemNode) {
+          break;
+        }
+        fragment.appendChild(itemNode);
       }
     }
     this.rootNode.appendChild(fragment);
@@ -110,6 +114,11 @@ export class VirtualScroller {
 
   buildItem(id) {
     const node = this.params.itemBuilder(id);
+
+    if (!node) {
+      return null;
+    }
+
     node.style.position = 'absolute';
     node.style.left = node.style.right = '0px';
     this.renderedItems[id] = {
