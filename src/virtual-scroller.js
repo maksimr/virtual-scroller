@@ -88,11 +88,11 @@ export class VirtualScroller {
     this.rootNode.appendChild(fragment);
 
     while (this.start < start) {
-      this.removeItemByIndex(this.start++);
+      this.removeItem(this.start++);
     }
 
     while (this.end > end) {
-      this.removeItemByIndex(this.end--);
+      this.removeItem(this.end--);
     }
 
     for (let i in this.renderedItems) {
@@ -138,7 +138,7 @@ export class VirtualScroller {
     return node;
   }
 
-  removeItemByIndex(index) {
+  removeItem(index) {
     if (this.renderedItems[index]) {
       const item = this.renderedItems[index];
       if (item.observer) {
