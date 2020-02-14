@@ -127,8 +127,10 @@ export class VirtualScroller {
     };
 
     if (window.MutationObserver) {
-      const observer = new MutationObserver(this.onResize.bind(this));
-      observer.observe(node, {childList: true});
+      const observer = new MutationObserver(() => {
+        this.onResize();
+      });
+      observer.observe(node, {characterData: true, childList: true, subtree: true});
       this.renderedItems[id].observer = observer;
     }
 
