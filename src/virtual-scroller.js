@@ -45,7 +45,7 @@ export class VirtualScroller {
   }
 
   onResize() {
-    const placeholder = this.params.itemBuilder();
+    const placeholder = this.params.itemBuilder(this.start);
     placeholder.style.visibility = 'hidden';
     this.rootNode.appendChild(placeholder);
     this.placeholderSize = placeholder.offsetHeight;
