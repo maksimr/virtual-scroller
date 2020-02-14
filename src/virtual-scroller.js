@@ -7,6 +7,8 @@ export class VirtualScroller {
     this.rootNode = rootNode;
     this.params = params;
     this.renderedItems = {};
+    this.start = 0;
+    this.end = 0;
     this.scroller = this.rootNode;
     while (
       this.scroller.parentNode &&
