@@ -50,8 +50,7 @@ export class VirtualScroller {
     this.rootNode.appendChild(placeholder);
     this.placeholderSize = placeholder.offsetHeight;
     this.rootNode.removeChild(placeholder);
-    this.runway.style.transform = `translateY(${this.placeholderSize *
-    this.params.itemCount}px)`;
+    this.runway.style.transform = `translateY(${this.placeholderSize * this.params.itemCount}px)`;
 
     for (let i in this.renderedItems) {
       this.renderedItems[i].height = null;
@@ -114,8 +113,8 @@ export class VirtualScroller {
     this.end = end;
   }
 
-  buildItem(id) {
-    const node = this.params.itemBuilder(id);
+  buildItem(index) {
+    const node = this.params.itemBuilder(index);
 
     if (!node) {
       return null;
@@ -123,7 +122,7 @@ export class VirtualScroller {
 
     node.style.position = 'absolute';
     node.style.left = node.style.right = '0px';
-    this.renderedItems[id] = {
+    this.renderedItems[index] = {
       node: node,
       height: null
     };
@@ -133,20 +132,20 @@ export class VirtualScroller {
         this.onResize();
       });
       observer.observe(node, {characterData: true, childList: true, subtree: true});
-      this.renderedItems[id].observer = observer;
+      this.renderedItems[index].observer = observer;
     }
 
     return node;
   }
 
-  unmount(id) {
-    if (this.renderedItems[id]) {
-      const item = this.renderedItems[id];
+  unmount(index) {
+    if (this.renderedItems[index]) {
+      const item = this.renderedItems[index];
       if (item.observer) {
         item.observer.disconnect();
       }
       this.rootNode.removeChild(item.node);
-      delete this.renderedItems[id];
+      delete this.renderedItems[index];
     }
   }
 }
