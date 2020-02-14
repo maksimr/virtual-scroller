@@ -35,7 +35,7 @@ describe('VirtualScroller', function() {
 
   it('should correctly render visible items if items less then defined in itemsCount', function() {
     VirtualScroller.builder(node, {
-      ...params,
+      itemCount: params.itemCount,
       itemBuilder(index) {
         return index > 0 ? null : itemBuilder(index);
       }

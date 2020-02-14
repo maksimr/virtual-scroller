@@ -1,11 +1,22 @@
 export class VirtualScroller {
-  static builder(node, params = {}) {
+  /**
+   * @param {HTMLElement} node
+   * @param {{itemBuilder: Function<HTMLElement>, itemCount: number}} params
+   * @return {VirtualScroller}
+   */
+  static builder(node, params) {
     return new VirtualScroller(node, params);
   }
 
+  /**
+   * @param {HTMLElement} rootNode
+   * @param {{itemBuilder: Function<HTMLElement>, itemCount: number}} params
+   * @return {VirtualScroller}
+   */
   constructor(rootNode, params) {
     this.rootNode = rootNode;
     this.params = params;
+    /** @type {Object.<string, {node: HTMLElement, height: <number|null>, observer: MutationObserver=}>} */
     this.renderedItems = {};
     this.start = 0;
     this.end = 0;
@@ -53,7 +64,9 @@ export class VirtualScroller {
     this.runway.style.transform = `translateY(${this.placeholderSize * this.params.itemCount}px)`;
 
     for (let i in this.renderedItems) {
-      this.renderedItems[i].height = null;
+      if (this.renderedItems.hasOwnProperty(i)) {
+        this.renderedItems[i].height = null;
+      }
     }
 
     this.performLayout();
@@ -71,6 +84,10 @@ export class VirtualScroller {
     this.fill(start, start + visible);
   }
 
+  /**
+   * @param {number} start
+   * @param {number} end
+   */
   fill(start, end) {
     start = Math.max(start, 0);
     end = Math.min(end, this.params.itemCount);
@@ -96,23 +113,31 @@ export class VirtualScroller {
     }
 
     for (let i in this.renderedItems) {
-      const item = this.renderedItems[i];
-      if (item.height === null) {
-        item.height = item.node.offsetHeight;
+      if (this.renderedItems.hasOwnProperty(i)) {
+        const item = this.renderedItems[i];
+        if (item.height === null) {
+          item.height = item.node.offsetHeight;
+        }
       }
     }
 
     let offset = start * this.placeholderSize;
     for (let i in this.renderedItems) {
-      const item = this.renderedItems[i];
-      item.node.style.transform = `translateY(${offset}px)`;
-      offset += item.height;
+      if (this.renderedItems.hasOwnProperty(i)) {
+        const item = this.renderedItems[i];
+        item.node.style.transform = `translateY(${offset}px)`;
+        offset += item.height;
+      }
     }
 
     this.start = start;
     this.end = end;
   }
 
+  /**
+   * @param {number} index
+   * @return {HTMLElement}
+   */
   buildItem(index) {
     const node = this.params.itemBuilder(index);
 
@@ -138,6 +163,9 @@ export class VirtualScroller {
     return node;
   }
 
+  /**
+   * @param {number} index
+   */
   removeItem(index) {
     if (this.renderedItems[index]) {
       const item = this.renderedItems[index];
@@ -149,3 +177,4 @@ export class VirtualScroller {
     }
   }
 }
+
