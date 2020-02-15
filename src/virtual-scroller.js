@@ -1,7 +1,13 @@
 export class VirtualScroller {
   /**
+   * @typedef {{itemBuilder: Function<HTMLElement>, itemCount: number}} VirtualScrollerConfig
+   */
+  /**
+   * @typedef {{node: HTMLElement, height: <number|null>, observer: MutationObserver=}} VirtualItem
+   */
+  /**
    * @param {HTMLElement} node
-   * @param {{itemBuilder: Function<HTMLElement>, itemCount: number}} params
+   * @param {VirtualScrollerConfig} params
    * @return {VirtualScroller}
    */
   static builder(node, params) {
@@ -10,13 +16,13 @@ export class VirtualScroller {
 
   /**
    * @param {HTMLElement} rootNode
-   * @param {{itemBuilder: Function<HTMLElement>, itemCount: number}} params
+   * @param {VirtualScrollerConfig} params
    * @return {VirtualScroller}
    */
   constructor(rootNode, params) {
     this.rootNode = rootNode;
     this.params = params;
-    /** @type {Object.<string, {node: HTMLElement, height: <number|null>, observer: MutationObserver=}>} */
+    /** @type {Object.<string, VirtualItem>} */
     this.renderedItems = {};
     this.start = 0;
     this.end = 0;
@@ -128,6 +134,15 @@ export class VirtualScroller {
         item.node.style.transform = `translateY(${offset}px)`;
         offset += item.height;
       }
+    }
+
+    if (
+      (end < this.params.itemCount) &&
+      (start * this.placeholderSize + this.scroller.clientHeight) > offset) {
+      const newAverageSize = (offset - start * this.placeholderSize) / ((end + 1) - start);
+      const adjustment = Math.ceil(((start * this.placeholderSize + this.scroller.clientHeight) - offset) / newAverageSize);
+      this.fill(start, end + adjustment);
+      return;
     }
 
     this.start = start;

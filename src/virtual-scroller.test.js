@@ -103,6 +103,23 @@ describe('VirtualScroller', function() {
     });
   });
 
+  describe('variousSizes', function() {
+    it('should correctly handle case when we assume less items to render than could be rendered in viewport', function() {
+      VirtualScroller.builder(node, {
+        itemCount: 100,
+        itemBuilder(index) {
+          const node = itemBuilder(index);
+          // first item is big and other are small
+          node.style.height = `${(index === 0 ? 10 : 5)}px`;
+          return node;
+        }
+      });
+
+      const items = node.querySelectorAll('.item');
+      expect(items.length).toEqual(19);
+    });
+  });
+
   function scroll(node, scrollTop) {
     (node === window ? document.documentElement : node).scrollTop = scrollTop;
     node.dispatchEvent(new Event('scroll'));
