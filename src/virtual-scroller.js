@@ -26,17 +26,7 @@ export class VirtualScroller {
     this.renderedItems = {};
     this.start = 0;
     this.end = 0;
-    this.scroller = this.rootNode;
-    while (
-      this.scroller.parentNode &&
-      this.scroller.parentNode !== document) {
-      const overflow = window.getComputedStyle(this.scroller).overflow;
-      if (overflow === 'visible' || overflow === '') {
-        this.scroller = this.scroller.parentNode;
-        continue;
-      }
-      break;
-    }
+    this.scroller = this._findScrollableNode(this.rootNode);
 
     if (!this.params.hasOwnProperty('itemCount')) {
       throw Error('itemCount is required');
@@ -190,6 +180,24 @@ export class VirtualScroller {
       this.rootNode.removeChild(item.node);
       delete this.renderedItems[index];
     }
+  }
+
+  /**
+   * @param {HTMLElement} node
+   * @return {HTMLElement}
+   */
+  _findScrollableNode(node) {
+    while (
+      node.parentNode &&
+      node.parentNode !== document) {
+      const overflow = window.getComputedStyle(node).overflow;
+      if (overflow === 'visible' || overflow === '') {
+        node = node.parentNode;
+        continue;
+      }
+      break;
+    }
+    return node;
   }
 }
 
