@@ -177,7 +177,7 @@ export class VirtualScroller {
 
     this.start = startIndex;
     this.end = endIndex;
-    if (averageSize !== this.sizeManager.getAverageSize()) {
+    if (averageSize !== this.sizeManager.getAverageSize() || !this.runway.style.transform) {
       const newScrollHeight = this.sizeManager.getAverageSize() * this.itemCount;
       const prevScrollHeight = averageSize * this.itemCount;
       const delta = newScrollHeight / prevScrollHeight;
@@ -219,7 +219,6 @@ function renderRunway(rootNode) {
   const runwayNode = document.createElement('div');
   runwayNode.style.width = runwayNode.style.height = '1px';
   runwayNode.style.position = 'absolute';
-  runwayNode.style.transform = 'translate(0, 0)';
   rootNode.style.position = 'relative';
   rootNode.appendChild(runwayNode);
   return runwayNode;
