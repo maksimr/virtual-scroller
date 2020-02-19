@@ -100,6 +100,16 @@ export class VirtualScroller {
       this.scheduleSync();
     });
 
+    if (window.MutationObserver) {
+      new MutationObserver((records) => {
+        if (records.find((record) => record.target !== this.rootNode)) {
+          this.scheduleSync();
+        }
+      }).observe(this.rootNode, {
+        characterData: true, childList: true, subtree: true
+      });
+    }
+
     this.scheduleSync();
   }
 
