@@ -137,13 +137,10 @@ export class VirtualScroller {
     }
     this.rootNode.appendChild(fragment);
 
-    while (this.start < startIndex) {
-      this.remove(this.start++);
-    }
-
-    while (this.end > endIndex) {
-      this.remove(this.end--);
-    }
+    Object.keys(this.rendered)
+      .map((it) => Number(it))
+      .filter((it) => it < startIndex || it > endIndex)
+      .forEach((it) => this.remove(it));
 
     for (let i in this.rendered) {
       if (this.rendered.hasOwnProperty(i)) {
