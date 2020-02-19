@@ -168,7 +168,11 @@ export class VirtualScroller {
     this.start = startIndex;
     this.end = endIndex;
     if (averageSize !== this.sizeManager.getAverageSize()) {
-      this.runway.style.transform = `translateY(${this.sizeManager.getAverageSize() * this.itemCount}px)`;
+      const newScrollHeight = this.sizeManager.getAverageSize() * this.itemCount;
+      const prevScrollHeight = averageSize * this.itemCount;
+      const delta = newScrollHeight / prevScrollHeight;
+      this.runway.style.transform = `translateY(${newScrollHeight}px)`;
+      this.scroller.scrollTop = this.scroller.scrollTop * delta;
     }
   }
 
