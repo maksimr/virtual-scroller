@@ -91,6 +91,7 @@ export class VirtualScroller {
     this.start = 0;
     this.end = 0;
     this.scroller = findScrollableAncestor(this.rootNode);
+    this.rootNode.style.contain = 'strict';
     this.runway = renderRunway(this.rootNode);
 
     (this.scroller === document.documentElement ? window : this.scroller)
@@ -182,6 +183,9 @@ export class VirtualScroller {
       const prevScrollHeight = averageSize * this.itemCount;
       const delta = newScrollHeight / prevScrollHeight;
       this.runway.style.transform = `translateY(${newScrollHeight}px)`;
+      if (this.scroller !== this.rootNode) {
+        this.rootNode.style.height = `${newScrollHeight}px`;
+      }
       this.scroller.scrollTop = this.scroller.scrollTop * delta;
     }
   }
