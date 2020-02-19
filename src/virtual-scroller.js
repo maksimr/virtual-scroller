@@ -171,7 +171,7 @@ export class VirtualScroller {
       }
     }
 
-    if ((endIndex < this.itemCount) && highOffset > offset) {
+    if (endIndex < (this.itemCount - 1) && highOffset > offset) {
       this.scheduleSync();
       return;
     }
