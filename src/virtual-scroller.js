@@ -148,28 +148,25 @@ export class VirtualScroller {
     }
     this.rootNode.appendChild(fragment);
 
-    Object.keys(this.rendered)
+    const renderedList = Object.keys(this.rendered);
+    const offset = renderedList
       .map((it) => Number(it))
-      .filter((it) => it < startIndex || it > endIndex)
-      .forEach((it) => this.remove(it));
-
-    for (let i in this.rendered) {
-      if (this.rendered.hasOwnProperty(i)) {
+      .filter((it) => {
+        if (it < startIndex || it > endIndex) {
+          this.remove(it);
+          return false;
+        }
+        return true;
+      }).map((i) => {
         const node = this.rendered[i];
         if (!this.sizeManager.has(node)) {
           this.sizeManager.measure(node);
         }
-      }
-    }
-
-    let offset = startIndex * this.sizeManager.getAverageSize();
-    for (let i in this.rendered) {
-      if (this.rendered.hasOwnProperty(i)) {
-        const node = this.rendered[i];
+        return node;
+      }).reduce((offset, node) => {
         node.style.transform = `translateY(${offset}px)`;
-        offset += this.sizeManager.getHopefulSize(node);
-      }
-    }
+        return offset + this.sizeManager.getHopefulSize(node);
+      }, startIndex * this.sizeManager.getAverageSize());
 
     if (endIndex < (this.itemCount - 1) && highOffset > offset) {
       this.scheduleSync();
