@@ -148,8 +148,7 @@ export class VirtualScroller {
     }
     this.rootNode.appendChild(fragment);
 
-    const renderedList = Object.keys(this.rendered);
-    const offset = renderedList
+    const offset = Object.keys(this.rendered)
       .map((it) => Number(it))
       .filter((it) => {
         if (it < startIndex || it > endIndex) {
@@ -178,12 +177,16 @@ export class VirtualScroller {
     if (averageSize !== this.sizeManager.getAverageSize() || !this.runway.style.transform) {
       const newScrollHeight = this.sizeManager.getAverageSize() * this.itemCount;
       const prevScrollHeight = averageSize * this.itemCount;
-      const delta = newScrollHeight / prevScrollHeight;
+
       this.runway.style.transform = `translateY(${newScrollHeight}px)`;
       if (this.scroller !== this.rootNode) {
         this.rootNode.style.height = `${newScrollHeight}px`;
       }
-      this.scroller.scrollTop = this.scroller.scrollTop * delta;
+
+      const delta = newScrollHeight / prevScrollHeight;
+      if (delta !== 1) {
+        this.scroller.scrollTop = this.scroller.scrollTop * delta;
+      }
     }
   }
 
