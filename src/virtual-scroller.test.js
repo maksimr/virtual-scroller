@@ -59,6 +59,50 @@ describe('VirtualScroller', function() {
     expect(queryAllRenderedItems(viewportNode).length).toEqual(VISIBLE_ITEMS_COUNT + BUFFER_ITEMS_COUNT);
   });
 
+  it('should remove items out of the bounds', function() {
+    const VISIBLE_ITEMS_COUNT = 5;
+    const viewportSize = VISIBLE_ITEMS_COUNT * ITEM_SIZE;
+    defineProperty(viewportNode, 'clientHeight', viewportSize);
+
+    VirtualScroller.builder(viewportNode, {
+      bufferSize: 0,
+      itemSize: ITEM_SIZE,
+      itemCount: 100,
+      itemBuilder
+    });
+
+    // scroll down
+    scrollTo(viewportNode, viewportSize);
+    expect(queryAllRenderedItems(viewportNode).length).toEqual(VISIBLE_ITEMS_COUNT);
+    expect((queryAllRenderedItems(viewportNode))[0].id).toEqual('5');
+
+    // scroll up
+    scrollTo(viewportNode, 0);
+    expect(queryAllRenderedItems(viewportNode).length).toEqual(VISIBLE_ITEMS_COUNT);
+    expect(queryAllRenderedItems(viewportNode)[4].id).toEqual('4');
+  });
+
+  it('should preserve right order in DOM when render items', function() {
+    const VISIBLE_ITEMS_COUNT = 5;
+    const viewportSize = VISIBLE_ITEMS_COUNT * ITEM_SIZE;
+    defineProperty(viewportNode, 'clientHeight', viewportSize);
+
+    VirtualScroller.builder(viewportNode, {
+      bufferSize: 0,
+      itemSize: ITEM_SIZE,
+      itemCount: 100,
+      itemBuilder
+    });
+
+    scrollTo(viewportNode, ITEM_SIZE);
+    expect(queryAllRenderedItems(viewportNode)[0].id).toEqual('1');
+    expect(queryAllRenderedItems(viewportNode)[4].id).toEqual('5');
+
+    scrollTo(viewportNode, 0);
+    expect(queryAllRenderedItems(viewportNode)[0].id).toEqual('0');
+    expect(queryAllRenderedItems(viewportNode)[4].id).toEqual('4');
+  });
+
   function itemBuilder(id) {
     const itemNode = document.createElement('div');
     itemNode.setAttribute('id', id);
@@ -69,6 +113,11 @@ describe('VirtualScroller', function() {
 
   function queryAllRenderedItems(rootNode) {
     return viewportNode.querySelectorAll('.' + ITEM_CLASS_NAME);
+  }
+
+  function scrollTo(node, scrollTop) {
+    node.scrollTop = scrollTop;
+    node.dispatchEvent(new Event('scroll'));
   }
 
   function defineProperty(node, propertyName, propertyValue) {
