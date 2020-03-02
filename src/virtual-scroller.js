@@ -4,7 +4,7 @@ import { addResizeListener } from './resize-observer';
 
 export class VirtualScroller {
   /**
-   * @typedef {{itemCount: number, itemBuilder: function(number), onRemoveItem: function(number)=, itemSize: number=}} VirtualScrollerParams
+   * @typedef {{itemCount: number, itemBuilder: function(number), onRemoveItem: function(number)=, itemSize: number=, bufferSize: number=}} VirtualScrollerParams
    */
   /**
    * @param {Element} node
@@ -68,7 +68,7 @@ export class VirtualScroller {
     const endOffset = scrollTop + viewportSize + bufferSize;
 
     let start = Math.floor(startOffset / this.expectedItemSize);
-    let end = Math.ceil(endOffset / this.expectedItemSize);
+    let end = Math.ceil(endOffset / this.expectedItemSize) - 1;
     for (let i = this.range.start; i <= this.range.end; i++) {
       const renderedElement = this.rendered[i];
       if (renderedElement) {
