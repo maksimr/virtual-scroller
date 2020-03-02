@@ -5,8 +5,14 @@ describe('VirtualScroller', function() {
   const ITEM_SIZE = 1;
   let viewportNode;
   beforeEach(function() {
-    viewportNode = document.createElement('div');
+    Object.defineProperties(window.HTMLElement.prototype, {
+      offsetLeft: {get: function() { return parseFloat(window.getComputedStyle(this).marginLeft) || 0; }},
+      offsetTop: {get: function() { return parseFloat(window.getComputedStyle(this).marginTop) || 0; }},
+      offsetHeight: {get: function() { return parseFloat(window.getComputedStyle(this).height) || (this.firstChild && this.firstChild.offsetHeight) || 0; }},
+      offsetWidth: {get: function() { return parseFloat(window.getComputedStyle(this).width) || (this.firstChild && this.firstChild.offsetWidth) || 0; }}
+    });
     spyOn(window, 'requestAnimationFrame').and.callFake((cb) => cb());
+    viewportNode = document.createElement('div');
   });
 
   it('should create virtual scroller', function() {
@@ -103,16 +109,41 @@ describe('VirtualScroller', function() {
     expect(queryAllRenderedItems(viewportNode)[4].id).toEqual('4');
   });
 
+  xit('should correctly layout items when user scroll up if actual size more than expected', function() {
+    const VISIBLE_ITEMS_COUNT = 5;
+    const viewportSize = VISIBLE_ITEMS_COUNT * ITEM_SIZE;
+    const ACTUAL_ITEM_SIZE = 2 * ITEM_SIZE;
+    defineProperty(viewportNode, 'clientHeight', viewportSize);
+
+    VirtualScroller.builder(viewportNode, {
+      bufferSize: 0,
+      itemSize: ITEM_SIZE,
+      itemCount: 100,
+      itemBuilder: itemBuilderFactory(ACTUAL_ITEM_SIZE)
+    });
+
+    scrollTo(viewportNode, ITEM_SIZE);
+    expect(queryAllRenderedItems(viewportNode)[0].id).toEqual('1');
+    expect(queryAllRenderedItems(viewportNode)[4].id).toEqual('5');
+  });
+
   function itemBuilder(id) {
-    const itemNode = document.createElement('div');
-    itemNode.setAttribute('id', id);
-    itemNode.style.height = ITEM_SIZE;
-    itemNode.classList.add(ITEM_CLASS_NAME);
-    return itemNode;
+    return itemBuilderFactory(ITEM_SIZE)(id);
+  }
+
+  function itemBuilderFactory(nodeSize) {
+    return (id) => {
+      const itemNode = document.createElement('div');
+      itemNode.setAttribute('id', id);
+      itemNode.style.height = nodeSize + 'px';
+      defineProperty(itemNode, 'offsetHeight', nodeSize);
+      itemNode.classList.add(ITEM_CLASS_NAME);
+      return itemNode;
+    };
   }
 
   function queryAllRenderedItems(rootNode) {
-    return viewportNode.querySelectorAll('.' + ITEM_CLASS_NAME);
+    return rootNode.querySelectorAll('.' + ITEM_CLASS_NAME);
   }
 
   function scrollTo(node, scrollTop) {
