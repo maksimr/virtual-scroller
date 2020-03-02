@@ -6,7 +6,7 @@
   "scripts": {
     "start": "parcel index.html",
     "build": "parcel build index.html",
-    "lint": "eslint src/**/*.js",
+    "lint": "eslint lib/**/*.js",
     "test": "jest"
   },
   "eslintConfig": {

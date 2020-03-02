@@ -1,4 +1,4 @@
-import { VirtualScroller } from './virtual-scroller';
+import { VirtualScroller } from '../lib/virtual-scroller';
 
 function main() {
   const count = 3000000;
