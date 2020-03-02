@@ -8,7 +8,6 @@ function main() {
     itemBuilder(it) {
       const icon = it % 2 ? '🦊' : '🐶';
       const item = document.createElement('div');
-      item.setAttribute('id', it);
       item.style.position = 'absolute';
       item.style.padding = '8px';
       item.innerHTML = it % 2 ?

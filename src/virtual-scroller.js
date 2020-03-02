@@ -3,10 +3,23 @@ import { SizeManager } from './size-manager';
 import { addResizeListener } from './resize-observer';
 
 export class VirtualScroller {
+  /**
+   * @typedef {{itemCount: number, itemBuilder: function(number), onRemoveItem: function(number)=, itemSize: number=}} VirtualScrollerParams
+   */
+  /**
+   * @param {Element} node
+   * @param {VirtualScrollerParams} params
+   * @returns {VirtualScroller}
+   */
   static builder(node, params) {
     return new VirtualScroller(node, params);
   }
 
+  /**
+   * @param {Element} viewportNode
+   * @param {VirtualScrollerParams} params
+   * @returns {VirtualScroller}
+   */
   constructor(viewportNode, params) {
     this.viewportNode = viewportNode;
     this.itemCount = params.itemCount;
@@ -26,6 +39,9 @@ export class VirtualScroller {
     this.scheduleSync();
   }
 
+  /**
+   * @private
+   */
   scheduleSync() {
     this.syncId = this.syncId || window.requestAnimationFrame(() => {
       this.syncId = null;
@@ -33,10 +49,17 @@ export class VirtualScroller {
     });
   }
 
+  /**
+   * @private
+   */
   sync() {
     this.updateRenderedRange(this.calcRange());
   }
 
+  /**
+   * @private
+   * @returns {{start: number, end: number}}
+   */
   calcRange() {
     const scrollTop = this.scrollbar.scrollTop;
     const viewportSize = this.scrollbar.viewportSize;
@@ -71,6 +94,10 @@ export class VirtualScroller {
     };
   }
 
+  /**
+   * @private
+   * @param {{start: number, end: number}} range
+   */
   updateRenderedRange(range) {
     /**
      * Render elements so that preserving correct position in DOM tree
@@ -174,19 +201,40 @@ export class VirtualScroller {
     this.range = range;
   }
 
+  /**
+   * @private
+   * @param {number} i Element index
+   * @returns {HTMLElement}
+   */
   createElement(i) {
     const item = document.createElement('div');
-    item.setAttribute('index', i);
+    item.setAttribute('index', String(i));
     item.style.position = 'absolute';
     item.appendChild(this.itemBuilder(i));
     return item;
   }
 
+  /**
+   * @private
+   * @param {HTMLElement} renderedElement
+   * @param {number} offset
+   */
   positionElement(renderedElement, offset) {
     renderedElement.style.top = this.scrollbar.calc(offset) + 'px';
     renderedElement.offset = offset;
   }
 
+  /**
+   * @public
+   * @param {number} position
+   */
+  scrollTo(position) {
+    this.scrollbar.scrollTo(position);
+  }
+
+  /**
+   * @public
+   */
   destroy() {
     this.scrollbar.destroy();
     this.sizeManager = null;

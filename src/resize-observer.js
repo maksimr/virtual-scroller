@@ -36,7 +36,7 @@ export function addResizeListener(element, listener) {
 }
 
 /**
- * @param {HTMLElement} resizeObserver
+ * @param {Node} resizeObserver
  */
 function setupTriggers(resizeObserver) {
   const growObserver = resizeObserver.firstChild;
@@ -63,7 +63,7 @@ function setupTriggers(resizeObserver) {
 }
 
 /**
- * @return {HTMLElement}
+ * @return {Node}
  */
 function createResizeObserver() {
   if (!createResizeObserver.resizeObserver) {
