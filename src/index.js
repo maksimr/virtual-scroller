@@ -8,7 +8,6 @@ function main() {
     itemBuilder(it) {
       const icon = it % 2 ? '🦊' : '🐶';
       const item = document.createElement('div');
-      item.style.position = 'absolute';
       item.style.padding = '8px';
       item.innerHTML = it % 2 ?
         `<b>${it + 1}</b>/${count} - ${icon} Lorem Ipsum is simply dummy text` :
