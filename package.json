@@ -17,6 +17,16 @@
     "env": {
       "browser": true,
       "node": true
+    },
+    "rules": {
+      "valid-jsdoc": [
+        "error",
+        {
+          "requireReturn": false,
+          "requireParamDescription": false,
+          "requireReturnDescription": false
+        }
+      ]
     }
   },
   "babel": {

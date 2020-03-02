@@ -5,6 +5,7 @@ export class Scrollbar {
   /**
    * @param {Element} viewportNode
    * @param {ScrollbarParams} params
+   * @return {Scrollbar}
    */
   static build(viewportNode, params) {
     return new Scrollbar(viewportNode, params);
@@ -145,6 +146,7 @@ export class Scrollbar {
 
   /**
    * @private
+   * @param {number} viewportScrollTop
    * @return {number}
    */
   setViewportScrollTop(viewportScrollTop) {

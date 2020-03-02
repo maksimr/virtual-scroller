@@ -18,7 +18,6 @@ export class VirtualScroller {
   /**
    * @param {Element} viewportNode
    * @param {VirtualScrollerParams} params
-   * @returns {VirtualScroller}
    */
   constructor(viewportNode, params) {
     this.viewportNode = viewportNode;

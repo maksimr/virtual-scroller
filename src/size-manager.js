@@ -14,6 +14,7 @@ export class SizeManager {
 
   /**
    * @param {!HTMLElement} element The element to measure.
+   * @return {boolean}
    */
   has(element) {
     return this.sizes.has(element);
@@ -40,6 +41,7 @@ export class SizeManager {
    * estimate based on all other previously measured elements or a
    * default.
    * @param {!HTMLElement} element The element to produce a size for.
+   * @return {number}
    */
   getHopefulSize(element) {
     const size = this.sizes.get(element);
