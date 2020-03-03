@@ -1,7 +1,7 @@
 import { VirtualScroller } from '../lib/virtual-scroller';
 
 function main() {
-  const count = 3000000;
+  const count = location.search ? Number(location.search.slice(1)) : 3000000;
   VirtualScroller.builder(document.getElementById('app'), {
     bufferSize: 0,
     itemCount: count,
