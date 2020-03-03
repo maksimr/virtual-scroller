@@ -2,7 +2,7 @@
   "name": "virtual-scroller",
   "version": "1.0.0",
   "description": "",
-  "main": "index.html",
+  "main": "lib/virtual-scroller.js",
   "scripts": {
     "start": "parcel index.html",
     "build": "parcel build index.html",
