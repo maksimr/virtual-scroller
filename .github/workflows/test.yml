@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v1
       - name: node
@@ -18,3 +18,10 @@ jobs:
           npm ci
           npm run lint
           npm test
+          npm start &
+          npm run test:e2e
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: diff_output
+          path: test/e2e/__image_snapshots__/__diff_output__
