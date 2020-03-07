@@ -19,13 +19,6 @@ describe('VirtualScroller', () => {
     expect(image).toMatchImageSnapshot();
   });
 
-  it('should scroll viewport', async () => {
-    await openTestPage();
-    await scrollTo(100);
-    const image = await page.screenshot();
-    expect(image).toMatchImageSnapshot();
-  });
-
   it('should scroll to the bottom', async () => {
     await openTestPage();
     await scrollToBottom();
