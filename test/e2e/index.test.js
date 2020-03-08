@@ -46,6 +46,13 @@ describe('VirtualScroller', () => {
     expect(image).toMatchImageSnapshot();
   });
 
+  it('should use window scroll', async () => {
+    await openTestPage({window: true, bufferSize: 1});
+    await scrollTo(300, true);
+    const image = await page.screenshot();
+    expect(image).toMatchImageSnapshot();
+  });
+
   async function openTestPage(params = {itemCount: 3000000}) {
     const serializedConfig = encodeURIComponent(JSON.stringify(params));
     await page.goto(`${config.url}?${serializedConfig}`);
@@ -55,10 +62,10 @@ describe('VirtualScroller', () => {
     await scrollTo(Infinity);
   }
 
-  async function scrollTo(scrollTop) {
-    await page.evaluate((scrollTop) => {
-      const appElement = document.getElementById('app');
-      appElement.scrollTop = isFinite(scrollTop) ? scrollTop : appElement.scrollHeight;
-    }, scrollTop);
+  async function scrollTo(scrollTop, isWindow = false) {
+    await page.evaluate((scrollTop, isWindow) => {
+      const scrollElement = isWindow ? document.documentElement : document.getElementById('app');
+      scrollElement.scrollTop = isFinite(scrollTop) ? scrollTop : scrollElement.scrollHeight;
+    }, scrollTop, isWindow);
   }
 });

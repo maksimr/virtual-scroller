@@ -3,7 +3,15 @@ import { VirtualScroller } from '../lib/virtual-scroller';
 function main() {
   const params = JSON.parse(decodeURIComponent(window.location.search.slice(1)) || '{}');
   const count = params.itemCount || 3000000;
-  VirtualScroller.builder(document.getElementById('app'), Object.assign({
+
+  const appElement = document.getElementById('app');
+
+  if (!params.window) {
+    appElement.style.height = '80vh';
+    appElement.style.overflow = 'auto';
+  }
+
+  VirtualScroller.builder(appElement, Object.assign({
     bufferSize: 0,
     itemCount: count,
     itemBuilder(it) {
