@@ -33,6 +33,13 @@ describe('VirtualScroller', () => {
     expect(image).toMatchImageSnapshot();
   });
 
+  it('should re-layout items after resize', async () => {
+    await openTestPage();
+    await page.setViewport({width: 400, height: 600});
+    const image = await page.screenshot();
+    expect(image).toMatchImageSnapshot();
+  });
+
   async function openTestPage(itemCount = 3000000) {
     await page.goto(`${config.url}?${itemCount}`);
   }
