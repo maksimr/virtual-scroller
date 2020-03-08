@@ -14,7 +14,7 @@ describe('VirtualScroller', () => {
   });
 
   it('should render only one item', async () => {
-    await openTestPage(1);
+    await openTestPage({itemCount: 1});
     const image = await page.screenshot();
     expect(image).toMatchImageSnapshot();
   });
@@ -40,8 +40,15 @@ describe('VirtualScroller', () => {
     expect(image).toMatchImageSnapshot();
   });
 
-  async function openTestPage(itemCount = 3000000) {
-    await page.goto(`${config.url}?${itemCount}`);
+  it('should render items for passed scroll top', async () => {
+    await openTestPage({scrollTop: 300});
+    const image = await page.screenshot();
+    expect(image).toMatchImageSnapshot();
+  });
+
+  async function openTestPage(params = {itemCount: 3000000}) {
+    const serializedConfig = encodeURIComponent(JSON.stringify(params));
+    await page.goto(`${config.url}?${serializedConfig}`);
   }
 
   async function scrollToBottom() {

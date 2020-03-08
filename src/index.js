@@ -1,8 +1,9 @@
 import { VirtualScroller } from '../lib/virtual-scroller';
 
 function main() {
-  const count = location.search ? Number(location.search.slice(1)) : 3000000;
-  VirtualScroller.builder(document.getElementById('app'), {
+  const params = JSON.parse(decodeURIComponent(window.location.search.slice(1)) || '{}');
+  const count = params.itemCount || 3000000;
+  VirtualScroller.builder(document.getElementById('app'), Object.assign({
     bufferSize: 0,
     itemCount: count,
     itemBuilder(it) {
@@ -13,7 +14,7 @@ function main() {
         `<b>${it + 1}</b>/${count} - Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book`;
       return item;
     }
-  });
+  }, params));
 }
 
 main();
