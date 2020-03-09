@@ -41,7 +41,7 @@ describe('VirtualScroller', () => {
   });
 
   it('should render items for passed scroll top', async () => {
-    await openTestPage({scrollTop: 300});
+    await openTestPage({scrollPosition: 300});
     const image = await page.screenshot();
     expect(image).toMatchImageSnapshot();
   });
@@ -49,6 +49,19 @@ describe('VirtualScroller', () => {
   it('should use window scroll', async () => {
     await openTestPage({window: true, bufferSize: 1});
     await scrollTo(300, true);
+    const image = await page.screenshot();
+    expect(image).toMatchImageSnapshot();
+  });
+
+  it('should render items horizontally', async () => {
+    await openTestPage({horizontal: true});
+    const image = await page.screenshot();
+    expect(image).toMatchImageSnapshot();
+  });
+
+  it('should scroll horizontally', async () => {
+    await openTestPage({horizontal: true});
+    await scrollTo(8000, false, true);
     const image = await page.screenshot();
     expect(image).toMatchImageSnapshot();
   });
@@ -62,10 +75,14 @@ describe('VirtualScroller', () => {
     await scrollTo(Infinity);
   }
 
-  async function scrollTo(scrollTop, isWindow = false) {
-    await page.evaluate((scrollTop, isWindow) => {
+  async function scrollTo(scrollTop, isWindow = false, isHorizontal = false) {
+    await page.evaluate((scrollTop, isWindow, isHorizontal) => {
       const scrollElement = isWindow ? document.documentElement : document.getElementById('app');
-      scrollElement.scrollTop = isFinite(scrollTop) ? scrollTop : scrollElement.scrollHeight;
-    }, scrollTop, isWindow);
+      if (isHorizontal) {
+        scrollElement.scrollLeft = isFinite(scrollTop) ? scrollTop : scrollElement.scrollWidth;
+      } else {
+        scrollElement.scrollTop = isFinite(scrollTop) ? scrollTop : scrollElement.scrollHeight;
+      }
+    }, scrollTop, isWindow, isHorizontal);
   }
 });
