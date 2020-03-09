@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "parcel index.html",
-    "build": "parcel build index.html",
+    "build": "parcel build index.html --public-url '.'",
     "lint": "eslint lib/**/*.js",
     "test": "jest ./lib",
     "test:e2e": "jest --config=test/e2e/config.js ./test/e2e"

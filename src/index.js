@@ -12,7 +12,6 @@ function main() {
   }
 
   VirtualScroller.builder(appElement, Object.assign({
-    bufferSize: 0,
     itemCount: count,
     itemBuilder(it) {
       const item = document.createElement('div');

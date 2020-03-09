@@ -1,0 +1,27 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: node
+        run: echo "##[set-output name=versoin;]$(cat .nvmrc)"
+        id: node
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "${{ steps.node.outputs.version }}"
+      - name: Build
+        run: |
+          npm ci
+          npm run build
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
