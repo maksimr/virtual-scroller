@@ -3,6 +3,10 @@
   "version": "0.1.0-alpha",
   "description": "",
   "main": "lib/virtual-scroller.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maksimr/virtual-scroller.git"
+  },
   "config": {
     "server": {
       "url": "http://localhost:1234"
