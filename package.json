@@ -8,6 +8,9 @@
       "url": "http://localhost:1234"
     }
   },
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "start": "parcel index.html",
     "build": "parcel build index.html --public-url '.'",
