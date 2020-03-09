@@ -1,5 +1,5 @@
 {
-  "name": "virtual-scroller",
+  "name": "@maksimr/virtual-scroller",
   "version": "0.1.0",
   "description": "",
   "main": "lib/virtual-scroller.js",
