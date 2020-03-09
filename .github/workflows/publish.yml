@@ -1,0 +1,23 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: node
+        run: echo "##[set-output name=versoin;]$(cat .nvmrc)"
+        id: node
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "${{ steps.node.outputs.version }}"
+      - name: Publish
+        run: |
+          npm ci
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
