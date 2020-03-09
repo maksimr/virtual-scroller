@@ -55,7 +55,7 @@ describe('VirtualScroller', () => {
 
   async function openTestPage(params = {itemCount: 3000000}) {
     const serializedConfig = encodeURIComponent(JSON.stringify(params));
-    await page.goto(`${config.url}?${serializedConfig}`);
+    await page.goto(`${config.server.url}?${serializedConfig}`);
   }
 
   async function scrollToBottom() {

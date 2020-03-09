@@ -4,7 +4,9 @@
   "description": "",
   "main": "lib/virtual-scroller.js",
   "config": {
-    "url": "http://localhost:1234"
+    "server": {
+      "url": "http://localhost:1234"
+    }
   },
   "scripts": {
     "start": "parcel index.html",
