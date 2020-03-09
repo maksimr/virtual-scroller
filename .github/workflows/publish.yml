@@ -2,10 +2,11 @@ name: Publish
 
 on:
   release:
-    types: [published]
+    tags:
+      - v*
 
 jobs:
-  build:
+  publish:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v1
