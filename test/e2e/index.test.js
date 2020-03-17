@@ -61,8 +61,7 @@ describe('VirtualScroller', () => {
 
   it('should scroll horizontally', async () => {
     await openTestPage({horizontal: true});
-    await scrollTo(8000, false, true);
-    await waitForItem('148');
+    await scrollTo(16000, false, true);
     const image = await page.screenshot();
     expect(image).toMatchImageSnapshot();
   });
