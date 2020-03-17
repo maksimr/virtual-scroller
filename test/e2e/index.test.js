@@ -26,7 +26,7 @@ describe('VirtualScroller', () => {
     // because actual items size is bigger than expected
     // so we should jump on the top to add extra scroll space
     // for possibility to scroll at the last item
-    await page.waitForSelector('[index="2999998"]');
+    await waitForItem('2999998');
     await scrollToBottom();
 
     const image = await page.screenshot();
@@ -62,6 +62,7 @@ describe('VirtualScroller', () => {
   it('should scroll horizontally', async () => {
     await openTestPage({horizontal: true});
     await scrollTo(8000, false, true);
+    await waitForItem('148');
     const image = await page.screenshot();
     expect(image).toMatchImageSnapshot();
   });
@@ -73,6 +74,10 @@ describe('VirtualScroller', () => {
 
   async function scrollToBottom() {
     await scrollTo(Infinity);
+  }
+
+  async function waitForItem(index) {
+    await page.waitForSelector(`[index="${index}"]`);
   }
 
   async function scrollTo(scrollTop, isWindow = false, isHorizontal = false) {
