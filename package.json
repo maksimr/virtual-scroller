@@ -20,6 +20,7 @@
     "release": "node -pe 'require(\"./package.json\").version' | xargs -I{} git tag v{} && git push origin --tags",
     "lint": "eslint lib/**/*.js",
     "test": "jest ./lib",
+    "test:watch": "npm test -- --watchAll",
     "test:e2e": "jest --config=test/e2e/config.js ./test/e2e"
   },
   "eslintConfig": {
