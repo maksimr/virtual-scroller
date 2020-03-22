@@ -32,7 +32,18 @@
       "browser": true,
       "node": true
     },
+    "globals": {
+      "WeakMap": true,
+      "describe": true,
+      "it": true,
+      "beforeEach": true,
+      "spyOn": true,
+      "expect": true
+    },
     "rules": {
+      "semi": "error",
+      "no-undef": "error",
+      "no-unused-vars": "error",
       "valid-jsdoc": [
         "error",
         {
