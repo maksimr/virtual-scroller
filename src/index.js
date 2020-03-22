@@ -3,7 +3,6 @@ import { VirtualScroller } from '../lib/virtual-scroller';
 function main() {
   const params = JSON.parse(decodeURIComponent(window.location.search.slice(1)) || '{}');
   const count = params.itemCount || 3000000;
-
   const appElement = document.getElementById('app');
 
   if (!params.window) {
