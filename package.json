@@ -21,7 +21,8 @@
     "lint": "eslint lib/**/*.js",
     "test": "jest ./lib",
     "test:watch": "npm test -- --watchAll",
-    "test:e2e": "jest --config=test/e2e/config.js ./test/e2e"
+    "test:e2e": "jest --config=test/e2e/config.js ./test/e2e",
+    "test:type": "tsc"
   },
   "eslintConfig": {
     "parserOptions": {
@@ -64,6 +65,8 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "typescript": "3.8.3",
+    "@types/jest": "25.1.0",
     "@babel/core": "7.9.0",
     "@babel/plugin-transform-runtime": "7.9.0",
     "@babel/preset-env": "7.9.5",
