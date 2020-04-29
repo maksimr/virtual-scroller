@@ -67,9 +67,9 @@
   "devDependencies": {
     "typescript": "3.8.3",
     "@types/jest": "25.2.1",
-    "@babel/core": "7.9.0",
-    "@babel/plugin-transform-runtime": "7.9.0",
-    "@babel/preset-env": "7.9.5",
+    "@babel/core": "7.9.6",
+    "@babel/plugin-transform-runtime": "7.9.6",
+    "@babel/preset-env": "7.9.6",
     "eslint": "6.8.0",
     "jest": "25.5.1",
     "jest-cli": "25.5.1",
