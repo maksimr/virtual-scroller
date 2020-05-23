@@ -70,7 +70,7 @@
     "@babel/core": "7.9.6",
     "@babel/plugin-transform-runtime": "7.9.6",
     "@babel/preset-env": "7.9.6",
-    "eslint": "7.0.0",
+    "eslint": "7.1.0",
     "jest": "26.0.1",
     "jest-cli": "26.0.1",
     "jest-image-snapshot": "4.0.0",
