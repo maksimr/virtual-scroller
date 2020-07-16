@@ -65,7 +65,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "typescript": "3.9.6",
+    "typescript": "3.9.7",
     "@types/jest": "26.0.4",
     "@babel/core": "7.10.5",
     "@babel/plugin-transform-runtime": "7.10.5",
