@@ -76,7 +76,7 @@
     "jest-image-snapshot": "4.5.1",
     "jest-puppeteer": "4.4.0",
     "parcel-bundler": "1.12.5",
-    "puppeteer": "5.5.0"
+    "puppeteer": "11.0.0"
   },
   "keywords": []
 }
