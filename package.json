@@ -20,8 +20,6 @@
     "release": "node -pe 'require(\"./package.json\").version' | xargs -I{} git tag v{} && git push origin --tags",
     "lint": "eslint lib/**/*.js",
     "test": "jest ./lib",
-    "test:watch": "npm test -- --watchAll",
-    "test:e2e": "jest --config=test/e2e/config.js ./test/e2e",
     "test:type": "tsc"
   },
   "eslintConfig": {
@@ -71,12 +69,7 @@
     "@babel/plugin-transform-runtime": "7.15.0",
     "@babel/preset-env": "7.15.6",
     "eslint": "7.32.0",
-    "jest": "26.6.3",
-    "jest-cli": "26.6.3",
-    "jest-image-snapshot": "4.5.1",
-    "jest-puppeteer": "4.4.0",
-    "parcel-bundler": "1.12.5",
-    "puppeteer": "5.5.0"
+    "parcel-bundler": "1.12.5"
   },
   "keywords": []
 }
