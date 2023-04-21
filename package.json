@@ -68,7 +68,7 @@
     "@babel/core": "7.21.4",
     "@babel/plugin-transform-runtime": "7.21.4",
     "@babel/preset-env": "7.21.4",
-    "eslint": "8.38.0",
+    "eslint": "8.39.0",
     "parcel-bundler": "1.12.5"
   },
   "keywords": []
