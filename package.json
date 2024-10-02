@@ -65,9 +65,9 @@
   "devDependencies": {
     "typescript": "5.5.4",
     "@types/jest": "29.5.13",
-    "@babel/core": "7.25.2",
-    "@babel/plugin-transform-runtime": "7.25.4",
-    "@babel/preset-env": "7.25.4",
+    "@babel/core": "7.25.7",
+    "@babel/plugin-transform-runtime": "7.25.7",
+    "@babel/preset-env": "7.25.7",
     "eslint": "8.57.1",
     "parcel-bundler": "1.12.5"
   },
