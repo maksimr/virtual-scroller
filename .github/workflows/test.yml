@@ -21,7 +21,7 @@ jobs:
       - name: Run e2e tests
         run: |
           echo "..."
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: diff_output
