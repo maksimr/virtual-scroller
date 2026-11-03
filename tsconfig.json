@@ -5,7 +5,7 @@
     "checkJs": true,
     "noEmit": true,
     "noImplicitAny": false,
-    "moduleResolution": "Node"
+    "strict": false
   },
   "include": [
     "lib/**/*"
